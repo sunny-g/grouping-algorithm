@@ -132,7 +132,7 @@ getTotalHappiness = (gs) ->
 
 swapUntilMaximumHappiness = (gs) ->
   averageHappiness = getTotalHappiness(gs)
-  iterations = 0
+  # iterations = 0
   while true
     bestSwap = [0, 0]
     bestHappinessGain = 0
@@ -149,18 +149,25 @@ swapUntilMaximumHappiness = (gs) ->
       # console.log("Best happiness gain is : " + bestHappinessGain)
       swapSpecificIndices(gs, bestSwap[0], bestSwap[1])
       averageHappiness = getTotalHappiness(gs)
-      iterations++
+      # iterations++
     else
       # console.log("Best happiness gain is : " + bestHappinessGain)
-      console.log(iterations)
-      return iterations
+      return
 
 groups = genGroups(key for key of affinities)
 console.log(groups)
 
+cloneGroups = (groups) ->
+  clonedGroups = []
+  for group in groups
+    clonedGroups.push([])
+    for person in group
+      clonedGroups[clonedGroups.length-1].push(person)
+  return clonedGroups
 
 
 bestHappiness = 0
+bestGroup = []
 for i in [0..100]
   randomizeGroups(groups)
   swapUntilMaximumHappiness(groups)
@@ -168,6 +175,10 @@ for i in [0..100]
   if getAverageHappiness(groups) > bestHappiness
     console.log "New best happiness!"
     bestHappiness = getAverageHappiness(groups)
-  console.log(getAverageHappiness(groups))
+    bestGroup = cloneGroups(groups)
+    console.log(bestHappiness)
+  # console.log(getAverageHappiness(groups))
 
+console.log("Best group was : ")
+console.log(bestGroup)
 console.log("Best happiness was : " + bestHappiness)
